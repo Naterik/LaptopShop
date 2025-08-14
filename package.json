@@ -1,0 +1,23 @@
+{
+  "name": "node-basic",
+  "version": "1.0.0",
+  "description": "learn-basic",
+  "keywords": [
+    "khuong"
+  ],
+  "homepage": "https://github.com/Naterik/nodejs_basic#readme",
+  "bugs": {
+    "url": "https://github.com/Naterik/nodejs_basic/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naterik/nodejs_basic.git"
+  },
+  "license": "ISC",
+  "author": "nateri",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
