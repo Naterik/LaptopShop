@@ -27,7 +27,7 @@ const getViewUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const userById = await handleViewUser(id);
     return res.render("view-user", {
-        id: id,
+        id: +id,
         user: userById
     })
 }
