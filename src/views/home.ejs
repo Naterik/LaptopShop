@@ -32,14 +32,18 @@
             </thead>
             <tbody>
                 <% users.forEach((item)=> {%>
-
-
                     <tr>
                         <th scope="row"><%-item.id%></th>
                         <td><%-item.name%></td>
                         <td><%-item.email%></td>
                         <td><%-item.address%></td>
-                        <td><button class="btn btn-info">Update</button> <button class="btn btn-danger">Delete</button>
+                        <td class="d-flex ">
+                            <form action="/handle-view-user/<%-item.id %>" method="get">
+                                <button class="btn btn-info me-3">View</button>
+                            </form>
+                            <form action="/handle-delete-user/<%-item.id %>" method="post">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     <% }) %>
