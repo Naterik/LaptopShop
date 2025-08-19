@@ -1,12 +1,14 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 import { prisma } from 'config/client';
-const handleCreateUser = async (name: string, email: string, address: string) => {
+const handleCreateUser = async (fullName: string, email: string, address: string) => {
     try {
         const newUser = await prisma.user.create({
             data: {
-                name: name,
-                email: email,
-                address: address
+                fullName: fullName,
+                username: email,
+                address: address,
+                password: "",
+                accountType: "",
             }
         })
         return newUser;
@@ -51,16 +53,18 @@ const handleViewUser = async (id: string) => {
     }
 
 }
-const handleUpdateUser = async (name: string, email: string, address: string, id: string) => {
+const handleUpdateUser = async (fullName: string, email: string, address: string, id: string) => {
     try {
         const updateUser = await prisma.user.update({
             where: {
                 id: +id
             },
             data: {
-                name: name,
-                email: email,
-                address: address
+                fullName,
+                username: email,
+                address: address,
+                password: "",
+                accountType: "",
             },
         })
         return updateUser
@@ -69,4 +73,15 @@ const handleUpdateUser = async (name: string, email: string, address: string, id
     }
 }
 
-export { handleCreateUser, getAllUsers, handleDeleteUser, handleViewUser, handleUpdateUser }
+const getAllRoles = async () => {
+    try {
+        const roles = await prisma.role.findMany();
+        return roles
+    } catch (err) {
+        throw (err)
+
+    }
+
+}
+
+export { handleCreateUser, getAllUsers, handleDeleteUser, handleViewUser, handleUpdateUser, getAllRoles }
