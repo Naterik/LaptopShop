@@ -2,6 +2,7 @@ import express from "express"
 import 'dotenv/config'
 import webRoutes from "./routes/web";
 import getConnection from "./config/database";
+import initDatabase from "config/seed";
 const app = express();
 const PORT = process.env.PORT || 8080
 
@@ -21,6 +22,8 @@ app.set('views', __dirname + '/views')
 webRoutes(app);
 
 getConnection();
+
+initDatabase();
 
 app.listen(PORT, () => {
     console.log(`My app is running in : ${PORT}`)

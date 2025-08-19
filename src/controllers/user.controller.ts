@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express"
-import { getAllUsers, handleCreateUser, handleDeleteUser, handleUpdateUser, handleViewUser } from "services/user.services"
+import { getAllRoles, getAllUsers, handleCreateUser, handleDeleteUser, handleUpdateUser, handleViewUser } from "services/user.services"
 const getHomePage = async (req: Request, res: Response) => {
     const user = await getAllUsers();
     return res.render("home", {
@@ -8,13 +8,14 @@ const getHomePage = async (req: Request, res: Response) => {
     })
 }
 
-const getCreateUserPage = (req: Request, res: Response) => {
-    return res.render("create-user")
+const getCreateUserPage = async (req: Request, res: Response) => {
+    const roles = await getAllRoles();
+    return res.render("admin/user/create-user", { roles })
 }
 
 const postCreateUser = async (req: Request, res: Response) => {
-    const { name, email, address } = req.body;
-    await handleCreateUser(name, email, address)
+    const { fullName, email, address } = req.body;
+    await handleCreateUser(fullName, email, address)
     return res.redirect("/")
 }
 
@@ -32,8 +33,8 @@ const getViewUser = async (req: Request, res: Response) => {
     })
 }
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { name, email, address, id } = req.body;
-    await handleUpdateUser(name, email, address, id)
+    const { fullName, email, address, id } = req.body;
+    await handleUpdateUser(fullName, email, address, id)
     return res.redirect("/")
 }
 
