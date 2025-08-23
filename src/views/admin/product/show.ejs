@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Manage Product</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -16,14 +15,57 @@
         <div id="layoutSidenav">
             <%- include('../layout/sidenav'); -%>
                 <div id="layoutSidenav_content">
-                    <main>
+                    <main class="container">
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">Manage products</h1>
+                            <h1 class="mt-4">Manage Products</h1>
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                <li class="breadcrumb-item active">products</li>
+                                <li class="breadcrumb-item active">Products</li>
                             </ol>
-                            <div>table product</div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Table Product :
+                                </h3>
+                                <a href="/admin/create-product" class="btn btn-primary  mt-3">Create
+
+                                    product</a>
+
+                            </div>
+                            <table class="table table-hover table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Factory</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if(products){ %>
+                                        <% products.forEach((product)=> {%>
+                                            <tr>
+                                                <th scope="row"><%-product.id%></th>
+                                                <td><%-product.name%></td>
+                                                <td><%-product.price%></td>
+                                                <td><%-product.factory%></td>
+                                                <td class="d-flex ">
+
+                                                    <form action="/admin/detail/<%-product.id %>" method="get">
+                                                        <button class="btn btn-info me-3">View</button>
+                                                    </form>
+                                                    <form action="/admin/delete-product/<%-product.id %>" method="post">
+
+                                                        <button class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else{ %>
+                                                    <h1>You don't have data yet !!</h1>
+                                                    <% } %>
+
+                                </tbody>
+                            </table>
                         </div>
 
                     </main>

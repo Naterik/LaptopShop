@@ -2,10 +2,7 @@
 import { Request, Response } from "express"
 import { getAllRoles, getAllUsers, handleCreateUser, handleDeleteUser, handleUpdateUser, handleViewUser } from "services/user.services"
 const getHomePage = async (req: Request, res: Response) => {
-    const user = await getAllUsers();
-    return res.render("home", {
-        users: user
-    })
+    return res.render("client/home/show")
 }
 
 const getCreateUserPage = async (req: Request, res: Response) => {
@@ -14,28 +11,34 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 }
 
 const postCreateUser = async (req: Request, res: Response) => {
-    const { fullName, email, address } = req.body;
-    await handleCreateUser(fullName, email, address)
-    return res.redirect("/")
+    const { fullName, username, address, phone, accountType, role } = req.body;
+    const avatar = req?.file?.filename ?? null;
+    await handleCreateUser(fullName, username, address, avatar, phone, accountType, role)
+    return res.redirect("user")
+
 }
 
 const postDeleteUser = async (req: Request, res: Response) => {
     const { id } = req.params
     await handleDeleteUser(id);
-    return res.redirect("/")
+    return res.redirect("user")
 }
 const getViewUser = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const userById = await handleViewUser(id);
-    return res.render("view-user", {
+    const roles = await getAllRoles();
+    const user = await handleViewUser(id);
+    return res.render("admin/user/detail", {
         id: +id,
-        user: userById
+        user,
+        roles
     })
 }
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { fullName, email, address, id } = req.body;
-    await handleUpdateUser(fullName, email, address, id)
-    return res.redirect("/")
+    const { fullName, address, id, role, phone } = req.body;
+    const avatar = req?.file?.filename ?? undefined
+    await handleUpdateUser(id, fullName, address, avatar, phone, role)
+    return res.redirect("user")
+
 }
 
 
