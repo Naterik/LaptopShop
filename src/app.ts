@@ -3,10 +3,9 @@ import 'dotenv/config'
 import webRoutes from "./routes/web";
 import getConnection from "./config/database";
 import initDatabase from "config/seed";
-<<<<<<< HEAD
 
-=======
->>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
+
+
 const app = express();
 const PORT = process.env.PORT || 8080
 
@@ -26,11 +25,8 @@ webRoutes(app);
 //config database connection
 getConnection();
 
-<<<<<<< HEAD
-
 //fake data
-=======
->>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
+
 initDatabase();
 
 app.listen(PORT, () => {

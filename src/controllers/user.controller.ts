@@ -11,16 +11,11 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 }
 
 const postCreateUser = async (req: Request, res: Response) => {
-<<<<<<< HEAD
     const { fullName, username, address, phone, accountType, role } = req.body;
     const avatar = req?.file?.filename ?? null;
     await handleCreateUser(fullName, username, address, avatar, phone, accountType, role)
     return res.redirect("user")
-=======
-    const { fullName, email, address } = req.body;
-    await handleCreateUser(fullName, email, address)
-    return res.redirect("/")
->>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
+
 }
 
 const postDeleteUser = async (req: Request, res: Response) => {
@@ -39,16 +34,11 @@ const getViewUser = async (req: Request, res: Response) => {
     })
 }
 const postUpdateUser = async (req: Request, res: Response) => {
-<<<<<<< HEAD
     const { fullName, address, id, role, phone } = req.body;
     const avatar = req?.file?.filename ?? undefined
     await handleUpdateUser(id, fullName, address, avatar, phone, role)
     return res.redirect("user")
-=======
-    const { fullName, email, address, id } = req.body;
-    await handleUpdateUser(fullName, email, address, id)
-    return res.redirect("/")
->>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
+
 }
 
 
