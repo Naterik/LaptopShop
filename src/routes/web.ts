@@ -9,14 +9,13 @@ const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage)
 
-    router.post("/handle-delete-user/:id", postDeleteUser)
-    router.get("/handle-view-user/:id", getViewUser)
-    router.post("/handle-update-user", postUpdateUser)
-
     router.get("/admin", getDashboardPage)
     router.get("/admin/user", getAdminUserPage)
     router.get("/admin/create-user", getCreateUserPage)
-    router.post("/admin/handle-create-user", fileUploadMiddleware("avatar"), postCreateUser);
+    router.post("/admin/create-user", fileUploadMiddleware("avatar"), postCreateUser);
+    router.post("/admin/delete-user/:id", postDeleteUser)
+    router.get("/admin/detail/:id", getViewUser)
+    router.post("/admin/update-user", fileUploadMiddleware("avatar"), postUpdateUser)
 
     router.get("/admin/order", getAdminOrderPage)
     router.get("/admin/product", getAdminProductPage)

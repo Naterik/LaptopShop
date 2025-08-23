@@ -1,3 +1,4 @@
+
 import { PrismaClient, Prisma } from '@prisma/client'
 import bcrypt from 'bcrypt'
 const saltRounds = 10;
@@ -65,18 +66,19 @@ const handleViewUser = async (id: string) => {
     }
 
 }
-const handleUpdateUser = async (fullName: string, email: string, address: string, id: string) => {
+const handleUpdateUser = async (id: string, fullName: string, address: string, avatar: string, phone: string, role: string) => {
     try {
-        const updateUser = await prisma.user.update({
+
+        const updateUser = await prisma.user.updateMany({
             where: {
                 id: +id
             },
             data: {
                 fullName,
-                username: email,
-                address: address,
-                password: "",
-                accountType: "",
+                address,
+                phone,
+                roleId: +role,
+                ...(avatar !== undefined && { avatar: avatar })
             },
         })
         return updateUser
