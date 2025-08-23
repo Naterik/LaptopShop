@@ -26,7 +26,11 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h3>Table user :
                                 </h3>
+<<<<<<< HEAD
                                 <a href="/admin/create-user" class="btn btn-primary  mt-3">Create
+=======
+                                <a href="/admin/user/create-user" class="btn btn-primary  mt-3">Create
+>>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
                                     user</a>
 
                             </div>
@@ -48,10 +52,17 @@
                                             <td><%-item.username%></td>
                                             <td><%-item.address%></td>
                                             <td class="d-flex ">
+<<<<<<< HEAD
                                                 <form action="/admin/detail/<%-item.id %>" method="get">
                                                     <button class="btn btn-info me-3">View</button>
                                                 </form>
                                                 <form action="/admin/delete-user/<%-item.id %>" method="post">
+=======
+                                                <form action="/handle-view-user/<%-item.id %>" method="get">
+                                                    <button class="btn btn-info me-3">View</button>
+                                                </form>
+                                                <form action="/handle-delete-user/<%-item.id %>" method="post">
+>>>>>>> d8091bccb704530fa930873bca1aa015b2e91812
                                                     <button class="btn btn-danger">Delete</button>
                                                 </form>
                                             </td>
