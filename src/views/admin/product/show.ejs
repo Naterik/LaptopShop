@@ -25,9 +25,8 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h3>Table Product :
                                 </h3>
-                                <a href="/admin/create-product" class="btn btn-primary  mt-3">Create
 
-                                    product</a>
+                                <a href="/admin/create-product" class="btn btn-primary  mt-3">Create product</a>
 
                             </div>
                             <table class="table table-hover table-striped table-bordered">
@@ -50,11 +49,10 @@
                                                 <td><%-product.factory%></td>
                                                 <td class="d-flex ">
 
-                                                    <form action="/admin/detail/<%-product.id %>" method="get">
+                                                    <form action="/admin/detail-product/<%-product.id %>" method="get">
                                                         <button class="btn btn-info me-3">View</button>
                                                     </form>
                                                     <form action="/admin/delete-product/<%-product.id %>" method="post">
-
                                                         <button class="btn btn-danger">Delete</button>
                                                     </form>
                                                 </td>
