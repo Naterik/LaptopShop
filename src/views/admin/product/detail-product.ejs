@@ -81,31 +81,32 @@
                                                     <div class="mb-3 col-6">
                                                         <label class="form-label">Factory</label>
                                                         <select name="factory" class="form-select">
-                                                            <option value="<%-product.factory%>" select>
-                                                                <%-product.factory%>
-                                                            </option>
-                                                            <option value="APPLE">Apple (MacBook)</option>
-                                                            <option value="ASUS">Asus</option>
-                                                            <option value="LENOVO">Lenovo</option>
-                                                            <option value="DELL">Dell</option>
-                                                            <option value="LG">LG</option>
-                                                            <option value="ACER">Acer</option>
+                                                            <% factoryOptions.forEach((factory,index)=> { %>
+                                                                <option value="<%-factory.value %>"
+                                                                    <%=product.factory===factory.value ? 'selected' : ''
+                                                                    %>>
+                                                                    <%- factory.name %>
+                                                                </option>
+                                                                <%})%>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-6">
                                                         <label class="form-label">Target</label>
                                                         <select name="target" class="form-select">
-                                                            <option value="<%-product.target%>" select>
-                                                                <%-product.target%>
-                                                            </option>
-                                                            <option value="GAMING">Gaming</option>
-                                                            <option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                                                            </option>
-                                                            <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
-                                                            <option value="MONG-NHE">Mỏng nhẹ</option>
-                                                            <option value="DOANH-NHAN">Doanh nhân</option>
+                                                            <% targetOptions.forEach((target,index)=> { %>
+                                                                <option value="<%-target.value %>"
+                                                                    <%=product.target===target.value ? 'selected' : ''
+                                                                    %>>
+                                                                    <%- target.name %>
+                                                                </option>
+                                                                <%})%>
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Image:</label>
+                                                    <input name="image" class="form-control " type="file"
+                                                        id="avatarFile" accept=".png, .jpg, .jpeg">
                                                 </div>
                                                 <% if (product.image) { %>
                                                     <img style="max-height: 250px; display: block; margin-bottom:10px ;"

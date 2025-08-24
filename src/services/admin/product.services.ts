@@ -31,7 +31,7 @@ const getAllProduct = async () => {
 
 const handleViewProduct = async (id: number) => {
     try {
-        const product = await prisma.product.findFirst({
+        const product = await prisma.product.findUnique({
             where: {
                 id,
             },

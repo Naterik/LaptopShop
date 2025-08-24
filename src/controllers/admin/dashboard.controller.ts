@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express"
-import { getAllProduct } from "services/product.services"
-import { getAllUsers } from "services/user.services"
+import { getAllProduct } from "services/admin/product.services"
+import { getAllUsers } from "services/admin/user.services"
 const getDashboardPage = (req: Request, res: Response) => {
     res.render("admin/dashboard/show")
 }

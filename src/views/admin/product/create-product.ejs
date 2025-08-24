@@ -80,25 +80,25 @@
                                                     <div class="mb-3 col-6">
                                                         <label class="form-label">Factory</label>
                                                         <select name="factory" class="form-select">
-                                                            <option value="1" select><%-oldData.factory%></option>
-                                                            <option value="APPLE">Apple (MacBook)</option>
-                                                            <option value="ASUS">Asus</option>
-                                                            <option value="LENOVO">Lenovo</option>
-                                                            <option value="DELL">Dell</option>
-                                                            <option value="LG">LG</option>
-                                                            <option value="ACER">Acer</option>
+                                                            <% factoryOptions.forEach((factory,index)=> { %>
+                                                                <option value="<%-factory.value %>"
+                                                                    <%=oldData.factory===factory.value ? 'selected' : ''
+                                                                    %>>
+                                                                    <%- factory.name %>
+                                                                </option>
+                                                                <%})%>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-6">
                                                         <label class="form-label">Target</label>
                                                         <select name="target" class="form-select">
-                                                            <option value="1" select><%-oldData.target%></option>
-                                                            <option value="GAMING">Gaming</option>
-                                                            <option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                                                            </option>
-                                                            <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
-                                                            <option value="MONG-NHE">Mỏng nhẹ</option>
-                                                            <option value="DOANH-NHAN">Doanh nhân</option>
+                                                            <% targetOptions.forEach((target,index)=> { %>
+                                                                <option value="<%-target.value %>"
+                                                                    <%=oldData.target===target.value ? 'selected' : ''
+                                                                    %>>
+                                                                    <%- target.name %>
+                                                                </option>
+                                                                <%})%>
                                                         </select>
                                                     </div>
                                                 </div>
