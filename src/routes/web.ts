@@ -6,12 +6,16 @@ import multer from "multer";
 import fileUploadMiddleware from "src/middleware/multer";
 import { getProductDetail } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
-import { handleViewProduct } from "services/admin/product.services";
-const upload = multer({ dest: 'uploads/' })
+import { getLoginPage, getRegisterPage, postLogin, postRegister } from "controllers/client/auth.controller";
 const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage)
     router.get("/product/:id", getProductDetail)
+
+    router.get("/login", getLoginPage);
+    router.get("/register", getRegisterPage);
+    router.get("/login", postLogin);
+    router.post("/register", postRegister);
 
     router.get("/admin", getDashboardPage)
     router.get("/admin/user", getAdminUserPage)
