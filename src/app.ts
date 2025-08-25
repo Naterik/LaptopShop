@@ -3,6 +3,11 @@ import 'dotenv/config'
 import webRoutes from "./routes/web";
 import getConnection from "./config/database";
 import initDatabase from "config/seed";
+import passport from "passport";
+import configPassportLocal from "middleware/passport.local";
+import session from "express-session";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import { PrismaClient } from "@prisma/client";
 
 
 
@@ -19,14 +24,35 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')
 
+//config session
+app.use(session({
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000 // ms
+    },
+    secret: 'a santa at nasa',
+    resave: true,
+    saveUninitialized: true,
+    store: new PrismaSessionStore(
+        new PrismaClient(),
+        {
+            checkPeriod: 2 * 60 * 1000,  //ms
+            dbRecordIdIsSessionId: true,
+            dbRecordIdFunction: undefined,
+        }
+    )
+}
+));
+app.use(passport.authenticate('session'));
 
+//config passport
+app.use(passport.initialize());
+configPassportLocal();
 //config routes
 webRoutes(app);
 //config database connection
 getConnection();
 
 //fake data
-
 initDatabase();
 
 app.listen(PORT, () => {

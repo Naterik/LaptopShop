@@ -1,13 +1,6 @@
-
-
-import bcrypt from 'bcrypt'
-const saltRounds = 10;
 import { prisma } from 'config/client';
 import { ACCOUNT_TYPE } from 'config/constant';
-const hashPassword = async (plainText: string) => {
-    const hash = await bcrypt.hash(plainText, saltRounds)
-    return hash
-}
+import { hashPassword } from 'config/password';
 
 const handleCreateUser = async (fullName: string, username: string, address: string, avatar: string, phone: string, accountType: string, role: string) => {
 

@@ -2,11 +2,12 @@ import express, { Express } from "express"
 import 'dotenv/config'
 import { getHomePage, getCreateUserPage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
 import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardPage } from "controllers/admin/dashboard.controller";
-import multer from "multer";
 import fileUploadMiddleware from "src/middleware/multer";
 import { getProductDetail } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
-import { getLoginPage, getRegisterPage, postLogin, postRegister } from "controllers/client/auth.controller";
+import { getLoginPage, getRegisterPage, postRegister } from "controllers/client/auth.controller";
+import passport from "passport";
+
 const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage)
@@ -14,7 +15,11 @@ const webRoutes = (app: Express) => {
 
     router.get("/login", getLoginPage);
     router.get("/register", getRegisterPage);
-    router.get("/login", postLogin);
+    router.post('/login', passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureMessage: true,
+    }));
     router.post("/register", postRegister);
 
     router.get("/admin", getDashboardPage)

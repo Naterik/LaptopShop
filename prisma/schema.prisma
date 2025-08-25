@@ -58,3 +58,10 @@ model Order {
 
   @@map("orders")
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.MediumText
+  expiresAt DateTime
+}

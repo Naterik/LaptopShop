@@ -27,6 +27,9 @@
       "views/*": [
         "./src/views/*"
       ],
+      "middleware/*": [
+        "./src/middleware/*"
+      ],
     }
   }
 }

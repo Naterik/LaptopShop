@@ -1,10 +1,7 @@
 import { prisma } from "config/client"
 import { ACCOUNT_TYPE } from "config/constant"
-import { hashPassword } from "services/admin/user.services"
+import { comparePassword, hashPassword } from "config/password"
 
-const handleLogin = async () => {
-
-}
 
 const handleRegister = async (email: string, username: string, password: string) => {
     const newPassword = await hashPassword(password);
@@ -34,4 +31,4 @@ const isExistEmail = async (email: string) => {
     return false;
 }
 
-export { handleLogin, handleRegister, isExistEmail }
+export { handleRegister, isExistEmail }

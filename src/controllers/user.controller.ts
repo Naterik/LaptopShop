@@ -4,6 +4,7 @@ import { getAllRoles, getAllUsers, handleCreateUser, handleDeleteUser, handleUpd
 import { getProducts } from "services/client/item.services"
 const getHomePage = async (req: Request, res: Response) => {
     const products = await getProducts();
+    console.log('req.user', req.user)
     return res.render("client/home/show", { products })
 }
 
