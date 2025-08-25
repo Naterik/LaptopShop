@@ -2,6 +2,7 @@
 import { Request, Response } from "express"
 import { handleRegister } from "services/client/auth.services"
 import { TUserSchema, UserSchema } from "src/validation/user.schema"
+
 const getLoginPage = (req: Request, res: Response) => {
     const { session } = req as any
     const messages = session?.messages ?? []
@@ -28,4 +29,14 @@ const postRegister = async (req: Request, res: Response) => {
     }
 }
 
-export { getLoginPage, getRegisterPage, postRegister }
+const getSuccessRedirectPage = (req: Request, res: Response) => {
+    const { user } = req as any
+    if (user?.role?.name === "ADMIN") {
+        return res.redirect("/admin")
+    } else {
+        return res.redirect("/")
+    }
+
+}
+
+export { getLoginPage, getRegisterPage, postRegister, getSuccessRedirectPage }

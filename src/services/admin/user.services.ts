@@ -47,17 +47,12 @@ const handleDeleteUser = async (id: string) => {
     }
 }
 const handleViewUser = async (id: string) => {
-    try {
-        const user = await prisma.user.findFirst({
-            where: {
-                id: +id,
-            },
-        })
-        return user
-    } catch (err) {
-        throw (err)
-    }
-
+    const user = await prisma.user.findFirst({
+        where: {
+            id: +id,
+        },
+    })
+    return user
 }
 const handleUpdateUser = async (id: string, fullName: string, address: string, avatar: string, phone: string, role: string) => {
     try {

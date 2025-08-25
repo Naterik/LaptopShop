@@ -47,6 +47,13 @@ app.use(passport.authenticate('session'));
 //config passport
 app.use(passport.initialize());
 configPassportLocal();
+
+//middleware
+app.use((req, res, next) => {
+    res.locals.user = req.user || null; // Pass user object to all views
+    next();
+});
+
 //config routes
 webRoutes(app);
 //config database connection

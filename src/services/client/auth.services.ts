@@ -31,4 +31,17 @@ const isExistEmail = async (email: string) => {
     return false;
 }
 
-export { handleRegister, isExistEmail }
+const getUserByRoleId = async (id: string) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            id: +id,
+        }, include: {
+            role: true
+        }, omit: {
+            password: true
+        }
+    })
+    return user
+}
+
+export { handleRegister, isExistEmail, getUserByRoleId }
