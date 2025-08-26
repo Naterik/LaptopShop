@@ -1,5 +1,5 @@
 
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { handleRegister } from "services/client/auth.services"
 import { TUserSchema, UserSchema } from "src/validation/user.schema"
 
@@ -8,6 +8,13 @@ const getLoginPage = (req: Request, res: Response) => {
     const messages = session?.messages ?? []
     return res.render("client/home/login", { messages })
 }
+
+const postLogout = (req: Request, res: Response, next: NextFunction) => {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+};
 
 const getRegisterPage = (req: Request, res: Response) => {
     const errors = [];
@@ -39,4 +46,4 @@ const getSuccessRedirectPage = (req: Request, res: Response) => {
 
 }
 
-export { getLoginPage, getRegisterPage, postRegister, getSuccessRedirectPage }
+export { getLoginPage, getRegisterPage, postRegister, getSuccessRedirectPage, postLogout }

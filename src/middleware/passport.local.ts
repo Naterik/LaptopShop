@@ -1,3 +1,4 @@
+import { Role, User } from "@prisma/client";
 import { prisma } from "config/client";
 import { comparePassword } from "config/password";
 import passport from "passport";
@@ -19,7 +20,7 @@ const configPassportLocal = () => {
         if (!checkPassword) {
             return callback(null, false, { message: 'Username/password invalid.' })
         }
-        return callback(null, user)
+        return callback(null, user as any)
     }));
 
     // lưu thông tin có thể hiên thị cho người dùng khi tạo 1 session

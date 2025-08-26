@@ -5,7 +5,7 @@ import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardP
 import fileUploadMiddleware from "src/middleware/multer";
 import { getProductDetail } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
-import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postRegister } from "controllers/client/auth.controller";
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin, isLogin } from "middleware/auth";
 
@@ -17,12 +17,13 @@ const webRoutes = (app: Express) => {
     router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/login", isLogin, getLoginPage);
     router.get("/register", getRegisterPage);
+    router.post("/register", postRegister);
     router.post('/login', passport.authenticate('local', {
         successRedirect: '/success-redirect',
         failureRedirect: '/login',
         failureMessage: true,
     }));
-    router.post("/register", postRegister);
+    router.post("/logout", postLogout);
 
     router.get("/admin", isAdmin, getDashboardPage)
     router.get("/admin/user", getAdminUserPage)
@@ -41,7 +42,7 @@ const webRoutes = (app: Express) => {
     router.post("/admin/delete-product/:id", postAdminDeleteProduct);
 
     router.get("/admin/order", getAdminOrderPage)
-    app.use("/", router);//bắt đầu url với đường link/
+    app.use("/", isAdmin, router);//bắt đầu url với đường link/
 
 }
 export default webRoutes
