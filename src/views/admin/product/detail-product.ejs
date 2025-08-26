@@ -44,36 +44,37 @@
                                             <%-error%>
                                         </div>
                                         <% }) %>
-                                            <form action="/admin/create-product" method="post"
+                                            <form action="/admin/update-product" method="post"
                                                 enctype="multipart/form-data">
+                                                <input value="<%-product.id%>" name="id" hidden />
                                                 <div class="row mb-3">
                                                     <div class="col-6">
                                                         <label class="form-label">Name:</label>
                                                         <input type="text" class="form-control" name="name"
-                                                            value="<%-oldData.name%>">
+                                                            value="<%-product.name%>">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label">Price: </label>
                                                         <input type="text" class="form-control" name="price"
-                                                            value="<%-oldData.price%>">
+                                                            value="<%-product.price%>">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Detail Description:</label>
                                                     <textarea class="form-control" name="detailDesc"
-                                                        style="height: 100px"><%-oldData.detailDesc%></textarea>
+                                                        style="height: 100px"><%-product.detailDesc%></textarea>
                                                 </div>
 
                                                 <div class="row mb-3">
                                                     <div class="col-6">
                                                         <label class="form-label">ShortDescription:</label>
                                                         <input type="text" class="form-control" name="shortDesc"
-                                                            value="<%-oldData.shortDesc%>">
+                                                            value="<%-product.shortDesc%>">
                                                     </div>
                                                     <div class="col-6 ">
                                                         <label class="form-label">Quantity:</label>
                                                         <input type="number" class="form-control" name="quantity"
-                                                            value="<%-oldData.quantity%>">
+                                                            value="<%-product.quantity%>">
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -82,7 +83,7 @@
                                                         <select name="factory" class="form-select">
                                                             <% factoryOptions.forEach((factory,index)=> { %>
                                                                 <option value="<%-factory.value %>"
-                                                                    <%=oldData.factory===factory.value ? 'selected' : ''
+                                                                    <%=product.factory===factory.value ? 'selected' : ''
                                                                     %>>
                                                                     <%- factory.name %>
                                                                 </option>
@@ -94,7 +95,7 @@
                                                         <select name="target" class="form-select">
                                                             <% targetOptions.forEach((target,index)=> { %>
                                                                 <option value="<%-target.value %>"
-                                                                    <%=oldData.target===target.value ? 'selected' : ''
+                                                                    <%=product.target===target.value ? 'selected' : ''
                                                                     %>>
                                                                     <%- target.name %>
                                                                 </option>
@@ -107,10 +108,16 @@
                                                     <input name="image" class="form-control " type="file"
                                                         id="avatarFile" accept=".png, .jpg, .jpeg">
                                                 </div>
-                                                <img style="max-height: 250px; display: none; margin-bottom:10px ;"
-                                                    alt="avatar preview" id="avatarPreview" />
-
-                                                <button type="submit" class="btn btn-warning mt-4">Create</button>
+                                                <% if (product.image) { %>
+                                                    <img style="max-height: 250px; display: block; margin-bottom:10px ;"
+                                                        alt="avatar preview" id="avatarPreview"
+                                                        src="/images/products/<%-product.image%>" />
+                                                    <% } else { %>
+                                                        <img style="max-height: 250px; display: none; margin-bottom:10px ;"
+                                                            alt="avatar preview" id="avatarPreview" />
+                                                        <% } %>
+                                                            <button type="submit"
+                                                                class="btn btn-warning mt-4">Update</button>
 
                                             </form>
                                 </div>
