@@ -3,6 +3,7 @@ import { comparePassword } from "config/password";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { getUserByRoleId } from "services/client/auth.services";
+import { getCart } from "services/client/item.services";
 
 const configPassportLocal = () => {
     passport.use(new LocalStrategy({ passReqToCallback: true }, async function verify(req, username, password, callback) {
@@ -28,8 +29,10 @@ const configPassportLocal = () => {
     // lấy dữ liệu dựa vào id mà người dùng lưu trong session thông qua id 
     passport.deserializeUser(async function (user: any, cb) {
         const { id, username } = user
+
         const userInDb: any = await getUserByRoleId(id)
-        return cb(null, { ...userInDb });
+        const sumCart = await getCart(id)
+        return cb(null, { ...userInDb, sumCart });
     });
 }
 

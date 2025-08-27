@@ -20,7 +20,6 @@ const handleRegister = async (email: string, username: string, password: string)
     } else {
         throw new Error("User k co role")
     }
-
 }
 
 const isExistEmail = async (email: string) => {
