@@ -108,4 +108,43 @@ const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: stri
     });
 }
 
-export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut }
+const handlePlaceOrder = async (userId: number, receiverName: string, receiverAddress: string, receiverPhone: string, totalPrice: string) => {
+    const cart = await prisma.cart.findUnique({
+        where: { userId },
+        include: {
+            cartDetails: true
+        }
+    })
+    if (cart) {
+        const createOrderDetail = cart.cartDetails.map((item) => ({
+            price: item.price,
+            quantity: item.quantity,
+            productId: item.productId,
+
+        })) ?? []
+        const order = await prisma.order.create({
+            data: {
+                totalPrice: +totalPrice,
+                receiverAddress,
+                receiverName,
+                receiverPhone,
+                paymentMethod: "COD",
+                paymentStatus: "PAYMENT_UNPAID",
+                paymentRef: null,
+                userId,
+                orderDetails: {
+                    create: createOrderDetail
+                }
+            }
+        })
+        if (order) {
+            await prisma.cartDetail.deleteMany({
+                where: { cartId: cart.id }
+            })
+            await prisma.cart.delete({ where: { userId } })
+        }
+
+    }
+}
+
+export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut, handlePlaceOrder }

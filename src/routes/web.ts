@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { getHomePage, getCreateUserPage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
 import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardPage } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getCartPage, postHandleCartToCheckOut, getProductDetail, postDeleteProductInCart, postProductToCart, getCheckOutPage } from "controllers/client/product.controller";
+import { getCartPage, postHandleCartToCheckOut, getProductDetail, postDeleteProductInCart, postProductToCart, getCheckOutPage, postPlaceOrder, getThanksPage } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
@@ -18,6 +18,8 @@ const webRoutes = (app: Express) => {
     router.post("/delete-product-in-cart/:id", postDeleteProductInCart)
     router.get("/checkout", getCheckOutPage)
     router.post("/handle-cart-to-check-out", postHandleCartToCheckOut)
+    router.post("/place-order", postPlaceOrder)
+    router.get("/thanks", getThanksPage)
 
     router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/login", isLogin, getLoginPage);
