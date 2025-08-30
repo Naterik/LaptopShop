@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Manage Order</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -16,14 +15,52 @@
         <div id="layoutSidenav">
             <%- include('../layout/sidenav'); -%>
                 <div id="layoutSidenav_content">
-                    <main>
+                    <main class="container">
                         <div class="container-fluid px-4">
                             <h1 class="mt-4">Manage Orders</h1>
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Orders</li>
                             </ol>
-                            <div>table Order</div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Table Order :
+                                </h3>
+                            </div>
+                            <table class="table table-hover table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">User</th>
+                                        <th scope="col">TotalPrice</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">PaymentMethod</th>
+                                        <th scope="col">PaymentStatus</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if(orders){ %>
+                                        <% orders.forEach((order)=> {%>
+                                            <tr>
+                                                <th scope="row"><%-order.id%></th>
+                                                <td><%-order?.user.fullName%></td>
+                                                <td><%-order.totalPrice%></td>
+                                                <td><%-order.status%></td>
+                                                <td><%-order.paymentMethod%></td>
+                                                <td><%-order.paymentStatus%></td>
+                                                <td class="d-flex ">
+                                                    <form action="/admin/detail-order/<%-order.id %>" method="get">
+                                                        <button class="btn btn-info me-3">View</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else{ %>
+                                                    <h1>You don't have data yet !!</h1>
+                                                    <% } %>
+
+                                </tbody>
+                            </table>
                         </div>
 
                     </main>

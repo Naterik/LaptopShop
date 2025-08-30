@@ -78,7 +78,7 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
 
 const deleteProductInCart = async (cartDetailId: number, userId: number, sumCart: number) => {
 
-    await prisma.cartDetail.delete({ where: { id: cartDetailId } })
+    const currentDetail = await prisma.cartDetail.delete({ where: { id: cartDetailId } })
     if (sumCart === 1) {
 
         await prisma.cart.delete({ where: { userId } })
@@ -89,15 +89,17 @@ const deleteProductInCart = async (cartDetailId: number, userId: number, sumCart
                 userId: userId,
             },
             data: {
-                sum: { decrement: 1 },
+                sum: { decrement: currentDetail.quantity },
             },
         })
     }
 
 }
 
-const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: string }[]) => {
+const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: string }[], cartId: string) => {
+    let quantity = 0;
     data.forEach(async cart => {
+        quantity += +(cart.quantity)
         await prisma.cartDetail.update({
             where: {
                 id: +cart?.id
@@ -105,7 +107,16 @@ const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: stri
                 quantity: +cart?.quantity
             }
         })
+
     });
+    await prisma.cart.update({
+        where: {
+            id: +cartId
+        },
+        data: {
+            sum: quantity
+        }
+    })
 }
 
 const handlePlaceOrder = async (userId: number, receiverName: string, receiverAddress: string, receiverPhone: string, totalPrice: string) => {
@@ -147,4 +158,18 @@ const handlePlaceOrder = async (userId: number, receiverName: string, receiverAd
     }
 }
 
-export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut, handlePlaceOrder }
+const showHistoryOrderDetail = async (userId: number) => {
+    return await prisma.order.findMany({
+        where: { userId },
+        include: {
+            orderDetails:
+            {
+                include:
+                    { product: true }
+            }
+        }
+    })
+}
+
+
+export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut, handlePlaceOrder, showHistoryOrderDetail }

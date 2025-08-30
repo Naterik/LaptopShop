@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { addProductToCart, deleteProductInCart, getDetailProduct, handlePlaceOrder, showCartDetailById, updateCartDetailBeforeCheckOut } from "services/client/item.services";
+import { addProductToCart, deleteProductInCart, getDetailProduct, handlePlaceOrder, showCartDetailById, showHistoryOrderDetail, updateCartDetailBeforeCheckOut } from "services/client/item.services";
 const getProductDetail = async (req: Request, res: Response) => {
     const { id } = req.params;
     const product = await getDetailProduct(+id)
@@ -17,13 +17,14 @@ const postProductToCart = async (req: Request, res: Response) => {
 
 const getCartPage = async (req: Request, res: Response) => {
     const { user } = req;
-    const cartDetails = await showCartDetailById(user?.id)
+
     if (!user) {
         return res.redirect("/login")
     }
+    const cartDetails = await showCartDetailById(+user?.id)
     const totalPrice = await cartDetails.map(item => +item.price * +item.quantity)?.reduce((a, b) => a + b, 0)
-
-    return res.render("client/product/cart", { cartDetails, totalPrice })
+    const cartId = cartDetails.length ? cartDetails[0].cartId : 0
+    return res.render("client/product/cart", { cartDetails, totalPrice, cartId })
 }
 
 const postDeleteProductInCart = async (req: Request, res: Response) => {
@@ -49,11 +50,12 @@ const getCheckOutPage = async (req: Request, res: Response) => {
 }
 const postHandleCartToCheckOut = async (req: Request, res: Response) => {
     const { user } = req;
+    const { cartId } = req.body
     if (!user) {
         return res.redirect("/login")
     }
     const currentCart: { id: string, quantity: string }[] = req?.body?.cartDetails ?? []
-    await updateCartDetailBeforeCheckOut(currentCart)
+    await updateCartDetailBeforeCheckOut(currentCart, cartId)
 
     return res.redirect("/checkout")
 }
@@ -71,5 +73,19 @@ const getThanksPage = async (req: Request, res: Response) => {
     if (!user) { return res.redirect("/login") }
     return res.render("client/product/thanks")
 }
+const getOrderHistory = async (req: Request, res: Response) => {
+    const { user } = req
+    const orders = await showHistoryOrderDetail(+user.id)
+    return res.render("client/home/history", { orders })
+}
 
-export { getProductDetail, postProductToCart, getCartPage, postDeleteProductInCart, postHandleCartToCheckOut, getCheckOutPage, postPlaceOrder, getThanksPage }
+const postAddToCartFromDetail = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const { quantity } = req.body
+    const { user } = req
+    if (!user) { return res.redirect("/login") }
+    await addProductToCart(+quantity, +id, user)
+    return res.redirect(`/product/${id}`)
+}
+
+export { getProductDetail, postProductToCart, getCartPage, postDeleteProductInCart, postHandleCartToCheckOut, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail }
