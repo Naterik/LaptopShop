@@ -6,7 +6,7 @@ import { TUserSchema, UserSchema } from "src/validation/user.schema"
 const getLoginPage = (req: Request, res: Response) => {
     const { session } = req as any
     const messages = session?.messages ?? []
-    return res.render("client/home/login", { messages })
+    return res.render("client/auth/login", { messages })
 }
 
 const postLogout = (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +19,7 @@ const postLogout = (req: Request, res: Response, next: NextFunction) => {
 const getRegisterPage = (req: Request, res: Response) => {
     const errors = [];
     const oldData = { fullName: "", username: "", password: "", confirmPassword: "" }
-    return res.render("client/home/register", { errors, oldData })
+    return res.render("client/auth/register", { errors, oldData })
 }
 
 const postRegister = async (req: Request, res: Response) => {
@@ -29,7 +29,7 @@ const postRegister = async (req: Request, res: Response) => {
         const errorsZod = validate.error.issues;
         const errors = errorsZod.map(error => `${error.message} (${error.path[0]})`)
         const oldData = { fullName, username, password, confirmPassword }
-        return res.render("client/home/register", { errors, oldData })
+        return res.render("client/auth/register", { errors, oldData })
     } else {
         await handleRegister(fullName, username, password)
         return res.redirect("/login")

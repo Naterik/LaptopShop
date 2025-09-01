@@ -3,16 +3,26 @@ import 'dotenv/config'
 import { getHomePage, getCreateUserPage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
 import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardPage } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getProductDetail } from "controllers/client/product.controller";
+import { getCartPage, postHandleCartToCheckOut, getProductDetail, postDeleteProductInCart, postProductToCart, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin, isLogin } from "middleware/auth";
+import { getAdminOrderDetailPage } from "controllers/admin/order.controller";
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage)
     router.get("/product/:id", getProductDetail)
+    router.post("/add-product-to-cart/:id", postProductToCart)
+    router.get("/cart", getCartPage)
+    router.post("/delete-product-in-cart/:id", postDeleteProductInCart)
+    router.get("/checkout", getCheckOutPage)
+    router.post("/handle-cart-to-check-out", postHandleCartToCheckOut)
+    router.post("/place-order", postPlaceOrder)
+    router.get("/thanks", getThanksPage)
+    router.get("/order-history", getOrderHistory)
+    router.post("/add-to-cart-from-detail/:id", postAddToCartFromDetail)
 
     router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/login", isLogin, getLoginPage);
@@ -42,6 +52,7 @@ const webRoutes = (app: Express) => {
     router.post("/admin/delete-product/:id", postAdminDeleteProduct);
 
     router.get("/admin/order", getAdminOrderPage)
+    router.get("/admin/detail-order/:id", getAdminOrderDetailPage)
     app.use("/", isAdmin, router);//bắt đầu url với đường link/
 
 }
