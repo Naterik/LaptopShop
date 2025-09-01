@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { getHomePage, getCreateUserPage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
 import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardPage } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getCartPage, postHandleCartToCheckOut, getProductDetail, postDeleteProductInCart, postProductToCart, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail } from "controllers/client/product.controller";
+import { getCartPage, postHandleCartToCheckOut, getProductDetail, postDeleteProductInCart, postProductToCart, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail, getProductFilterPage } from "controllers/client/product.controller";
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postAdminDeleteProduct, postAdminUpdateProduct } from "controllers/admin/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
@@ -13,7 +13,9 @@ import { getAdminOrderDetailPage } from "controllers/admin/order.controller";
 const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage)
+    router.get("/products", getProductFilterPage)
     router.get("/product/:id", getProductDetail)
+
     router.post("/add-product-to-cart/:id", postProductToCart)
     router.get("/cart", getCartPage)
     router.post("/delete-product-in-cart/:id", postDeleteProductInCart)
@@ -23,8 +25,8 @@ const webRoutes = (app: Express) => {
     router.get("/thanks", getThanksPage)
     router.get("/order-history", getOrderHistory)
     router.post("/add-to-cart-from-detail/:id", postAddToCartFromDetail)
-
     router.get("/success-redirect", getSuccessRedirectPage)
+
     router.get("/login", isLogin, getLoginPage);
     router.get("/register", getRegisterPage);
     router.post("/register", postRegister);
