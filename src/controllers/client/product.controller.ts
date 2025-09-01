@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
-import { addProductToCart, deleteProductInCart, getDetailProduct, handlePlaceOrder, showCartDetailById, showHistoryOrderDetail, updateCartDetailBeforeCheckOut } from "services/client/item.services";
+import { addProductToCart, countTotalProductPageClient, deleteProductInCart, getDetailProduct, getProducts, handlePlaceOrder, showCartDetailById, showHistoryOrderDetail, updateCartDetailBeforeCheckOut } from "services/client/item.services";
+import { filterFactoryAppleAndDell, filterPriceInTwoRange, filterPriceRange, getProductWithFilter } from "services/client/product.filter.services";
 const getProductDetail = async (req: Request, res: Response) => {
     const { id } = req.params;
     const product = await getDetailProduct(+id)
@@ -89,4 +90,26 @@ const postAddToCartFromDetail = async (req: Request, res: Response) => {
     return res.redirect(`/product/${id}`)
 }
 
-export { getProductDetail, postProductToCart, getCartPage, postDeleteProductInCart, postHandleCartToCheckOut, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail }
+const getProductFilterPage = async (req: Request, res: Response) => {
+    const { page, target = "", factory = "", price = "", sort = "" } = req.query as {
+        page?: string,
+        target: string,
+        factory: string,
+        price: string,
+        sort: string
+    }
+    let currentPage = page ? +page : 1;
+    if (currentPage < 0) currentPage = 1;
+    // const totalPages = await countTotalProductPageClient(6);
+    // const products = await getProducts(currentPage, 6)
+    const filterData = await getProductWithFilter(currentPage, 6, target, factory, price, sort);
+    return res.render("client/product/filter", {
+        products: filterData.products,
+        page: currentPage,
+        totalPages: +filterData.totalPages
+    })
+
+
+}
+
+export { getProductDetail, postProductToCart, getCartPage, postDeleteProductInCart, postHandleCartToCheckOut, getCheckOutPage, postPlaceOrder, getThanksPage, getOrderHistory, postAddToCartFromDetail, getProductFilterPage }

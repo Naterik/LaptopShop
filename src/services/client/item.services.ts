@@ -1,7 +1,9 @@
 import { prisma } from "config/client"
-const getProducts = async () => {
-    return await prisma.product.findMany();
+const getProducts = async (page: number, totalPage: number) => {
+    const pageSize = (page - 1) * totalPage
+    return await prisma.product.findMany({ skip: pageSize, take: totalPage });
 }
+
 const getDetailProduct = async (id: number) => {
     return await prisma.product.findFirst({ where: { id } })
 }
@@ -75,7 +77,6 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
         })
     }
 }
-
 const deleteProductInCart = async (cartDetailId: number, userId: number, sumCart: number) => {
 
     const currentDetail = await prisma.cartDetail.delete({ where: { id: cartDetailId } })
@@ -95,7 +96,6 @@ const deleteProductInCart = async (cartDetailId: number, userId: number, sumCart
     }
 
 }
-
 const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: string }[], cartId: string) => {
     let quantity = 0;
     data.forEach(async cart => {
@@ -118,7 +118,6 @@ const updateCartDetailBeforeCheckOut = async (data: { id: string, quantity: stri
         }
     })
 }
-
 const handlePlaceOrder = async (userId: number, receiverName: string, receiverAddress: string, receiverPhone: string, totalPrice: string) => {
     try {
         await prisma.$transaction(async (tx) => {
@@ -185,13 +184,9 @@ const handlePlaceOrder = async (userId: number, receiverName: string, receiverAd
         })
         return "";
     } catch (error) {
-        console.log('error :>>>>>>>>>>>>>>>>>>>>>>>>.. ', error);
         return error.message
     }
-
-
 }
-
 const showHistoryOrderDetail = async (userId: number) => {
     return await prisma.order.findMany({
         where: { userId },
@@ -204,6 +199,11 @@ const showHistoryOrderDetail = async (userId: number) => {
         }
     })
 }
+const countTotalProductPageClient = async (pageSize: number) => {
+    const totalItems = await prisma.product.count();
+    const totalPage = Math.ceil(totalItems / pageSize);
+    return totalPage
+}
 
 
-export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut, handlePlaceOrder, showHistoryOrderDetail }
+export { getProducts, getDetailProduct, addProductToCart, getCart, showCartDetailById, deleteProductInCart, updateCartDetailBeforeCheckOut, handlePlaceOrder, showHistoryOrderDetail, countTotalProductPageClient }

@@ -1,5 +1,5 @@
 import { prisma } from 'config/client';
-import { ACCOUNT_TYPE } from 'config/constant';
+import { ACCOUNT_TYPE, TOTAL_ITEMS_PER_PAGE } from 'config/constant';
 import { hashPassword } from 'config/password';
 
 const handleCreateUser = async (fullName: string, username: string, address: string, avatar: string, phone: string, accountType: string, role: string) => {
@@ -24,15 +24,20 @@ const handleCreateUser = async (fullName: string, username: string, address: str
         return [];
     }
 }
-const getAllUsers = async () => {
-    try {
-        const users = await prisma.user.findMany()
-        return users
-    } catch (err) {
-        console.log(err);
-        return [];
-    }
+const getAllUsers = async (page: number) => {
+    const pageSize = TOTAL_ITEMS_PER_PAGE
+    const currentPage = (page - 1) * pageSize
+    return await prisma.user.findMany({
+        skip: currentPage,
+        take: pageSize
+    })
+}
 
+const countTotalUserPages = async () => {
+    const pageSize = TOTAL_ITEMS_PER_PAGE;
+    const totalItems = await prisma.user.count();
+    const totalPages = Math.ceil(totalItems / pageSize);
+    return totalPages
 }
 const handleDeleteUser = async (id: string) => {
     try {
@@ -88,5 +93,5 @@ const getAllRoles = async () => {
 
 }
 
-export { handleCreateUser, getAllUsers, handleDeleteUser, handleViewUser, handleUpdateUser, getAllRoles, hashPassword }
+export { handleCreateUser, getAllUsers, handleDeleteUser, handleViewUser, handleUpdateUser, getAllRoles, hashPassword, countTotalUserPages }
 
